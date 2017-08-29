@@ -7,7 +7,7 @@ import javax.ws.rs.ext.Provider;
 
 import com.pratik.messenger.datamodel.ErrorMessage;
 
-@Provider
+//@Provider   --> commented to disable
 public class GenericExcpetionMapper implements ExceptionMapper<Throwable>{
 
 	@Override

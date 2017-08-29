@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import com.pratik.messenger.database.DatabaseClass;
+import com.pratik.messenger.datamodel.ErrorMessage;
 import com.pratik.messenger.datamodel.Message;
 import com.pratik.messenger.datamodel.Profiles;
 import com.pratik.messenger.exception.DataException;
@@ -24,9 +30,19 @@ public class MessageService {
 	}
 
 	public Message getMessage(long id){
+		
+		ErrorMessage erMsg = new ErrorMessage("404", "Data is not found", "www.google.com" );
+		Response resp =  Response.status(Status.INTERNAL_SERVER_ERROR)
+				.entity(erMsg)
+				.build();
+		
 		Message msg = messages.get(id);
 		if(null == msg){
-			throw new DataException("Message with Id: " + id + " not found...!");
+			//throw new DataException("Message with Id: " + id + " not found...!");  -- customized exception message using excepyion mapper
+			
+			//throw new WebApplicationException(Status.NOT_FOUND);
+			//throw new WebApplicationException(resp);
+			throw new NotFoundException(resp);
 		}
 		return msg;
 	}
