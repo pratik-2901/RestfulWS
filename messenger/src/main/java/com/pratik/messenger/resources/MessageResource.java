@@ -29,7 +29,7 @@ public class MessageResource {
 	
 	@Path("/{messageId}")
 	@GET
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Message getMessage(@PathParam("messageId") long id){			//injecting uri parameter to method as argument
 		return msgServc.getMessage(id);
 	}

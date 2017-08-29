@@ -7,6 +7,7 @@ import java.util.Map;
 import com.pratik.messenger.database.DatabaseClass;
 import com.pratik.messenger.datamodel.Message;
 import com.pratik.messenger.datamodel.Profiles;
+import com.pratik.messenger.exception.DataException;
 
 public class MessageService {
 	
@@ -23,7 +24,11 @@ public class MessageService {
 	}
 
 	public Message getMessage(long id){
-		return messages.get(id);
+		Message msg = messages.get(id);
+		if(null == msg){
+			throw new DataException("Message with Id: " + id + " not found...!");
+		}
+		return msg;
 	}
 	
 	public Message addMessage(Message msg){
