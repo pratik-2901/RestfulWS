@@ -10,8 +10,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
+import com.pratik.messenger.datamodel.Links;
 import com.pratik.messenger.datamodel.Message;
 import com.pratik.messenger.service.MessageService;
 
@@ -30,8 +33,24 @@ public class MessageResource {
 	@Path("/{messageId}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Message getMessage(@PathParam("messageId") long id){			//injecting uri parameter to method as argument
-		return msgServc.getMessage(id);
+	public Message getMessage(@PathParam("messageId") long id, @Context UriInfo uriInfo){			//injecting uri parameter to method as argument
+		//return msgServc.getMessage(id);
+		
+		Message msg = msgServc.getMessage(id);
+		 String url = getSelfUri(uriInfo, msg);
+		msg.addLink(url, "Self");
+		
+		return msg;
+	}
+
+
+	private String getSelfUri(UriInfo uriInfo, Message msg) {
+		String url = uriInfo.getBaseUriBuilder()
+			.path(MessageResource.class)
+			.path(Long.toString(msg.getId()))
+			.build()
+			.toString();
+		return url;
 	}
 	
 	
