@@ -37,10 +37,21 @@ public class MessageResource {
 		//return msgServc.getMessage(id);
 		
 		Message msg = msgServc.getMessage(id);
-		 String url = getSelfUri(uriInfo, msg);
-		msg.addLink(url, "Self");
+		//String url = getSelfUri(uriInfo, msg);
+		msg.addLink(getSelfUri(uriInfo, msg), "Self");
+		msg.addLink(getProfileUri(uriInfo, msg), "Profile");
 		
 		return msg;
+	}
+
+
+	private String getProfileUri(UriInfo uriInfo, Message msg) {
+		String url = uriInfo.getBaseUriBuilder()
+				.path(ProfileResource.class)
+				.path(msg.getAuthor())
+				.build()
+				.toString();
+		return url;
 	}
 
 
