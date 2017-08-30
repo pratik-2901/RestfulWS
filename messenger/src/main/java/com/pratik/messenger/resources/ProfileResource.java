@@ -25,6 +25,7 @@ import com.pratik.messenger.service.ProfileService;
  */
 
 @Path("/profiles")
+//@Produces(value={MediaType.APPLICATION_JSON, MediaType.TEXT_XML})		//content negotiation
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ProfileResource {
@@ -32,9 +33,19 @@ public class ProfileResource {
 	private ProfileService profServ = new ProfileService();
 	
 	@GET
-	public List<Profiles> getAllProfiles(){
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Profiles> getJsonAllProfiles(){
+		System.out.println("JSON Method Called...");
 		return profServ.getAllProfiles();
 	}
+	
+	@GET
+	@Produces(MediaType.TEXT_XML)
+	public List<Profiles> getXmlAllProfiles(){
+		System.out.println("XML Method Called...");
+		return profServ.getAllProfiles();
+	}
+	
 	
 	@GET
 	@Path("/{profileName}")
@@ -43,7 +54,16 @@ public class ProfileResource {
 	}
 	
 	@POST
-	public Profiles addProfile(Profiles newProfile){
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Profiles addJsonProfile(Profiles newProfile){
+		System.out.println("JSON Method Called...");
+		return profServ.addProfile(newProfile);
+	}
+	
+	@POST
+	@Consumes(MediaType.TEXT_XML)
+	public Profiles addXmlProfile(Profiles newProfile){
+		System.out.println("XML Method Called...");
 		return profServ.addProfile(newProfile);
 	}
 	
